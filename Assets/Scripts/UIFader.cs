@@ -6,7 +6,11 @@ public class UIFader : MonoBehaviour
     private CanvasGroup fadeGroup;
     [SerializeField] private float fadeDuration;
 
-    void Start() => fadeGroup = GetComponent<CanvasGroup>();
+    void Start()
+    {
+        fadeGroup = GetComponent<CanvasGroup>();
+        FadeIn();
+    }
 
     public void FadeIn() => StartCoroutine(FadeCoroutine(0));
     public void FadeOut() => StartCoroutine(FadeCoroutine(1));

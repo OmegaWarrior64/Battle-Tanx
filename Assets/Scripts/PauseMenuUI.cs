@@ -8,8 +8,6 @@ public class PauseMenuUI : MonoBehaviour
     private Button quitButton;
 
     private GameObject pauseMenu;
-
-    private GameManager gameManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -21,22 +19,16 @@ public class PauseMenuUI : MonoBehaviour
 
         pauseButton.onClick.AddListener(() =>
         {
-            GetGameManager().Pause();
+            GameManager.Instance.Pause();
             pauseMenu.SetActive(true);
         });
         
         resumeButton.onClick.AddListener(() =>
         {
-            GetGameManager().UnPause();
+            GameManager.Instance.UnPause();
             pauseMenu.SetActive(false);
         });
 
-        quitButton.onClick.AddListener(() => GetGameManager().TransitionToScene("Main Menu"));
-    }
-
-    private GameManager GetGameManager()
-    {
-        if (gameManager == null) gameManager = FindAnyObjectByType<GameManager>();
-        return gameManager;
+        quitButton.onClick.AddListener(() => GameManager.Instance.TransitionToScene("Main Menu"));
     }
 }

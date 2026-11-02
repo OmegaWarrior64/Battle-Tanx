@@ -51,7 +51,7 @@ public class HealthSystem : MonoBehaviour
         currentHealth = maxHealth;
     }
 
-    public IEnumerator SetTempInvincibility(float invTime)
+    public IEnumerator SetInvincibility(float invTime)
     {
         invincibility = true;
         yield return new WaitForSeconds(invTime);

@@ -11,8 +11,11 @@ public class PlayerController : MonoBehaviour
     private Rigidbody2D rb;
     private Camera mainCam;
     private LineRenderer lineRenderer;
+    private ParticleSystem shotParticles;
+    private HealthSystem health;
 
     private AudioSource engineSound;
+    private AudioSource barrelSound;
 
     private Transform bodyGraphic;
     private Transform barrelGraphic;
@@ -39,15 +42,20 @@ public class PlayerController : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         mainCam = Camera.main;
         lineRenderer = GetComponent<LineRenderer>();
+        shotParticles = GetComponentInChildren<ParticleSystem>();
+        health = GetComponent<HealthSystem>();
         
         bodyGraphic = transform.Find("Body Graphic");
         barrelGraphic = transform.Find("Barrel Graphic");
         shootPoint = transform.Find("Barrel Graphic/Shoot Point");
 
         engineSound = bodyGraphic.GetComponent<AudioSource>();
+        barrelSound = barrelGraphic.GetComponent<AudioSource>();
 
         pressAction = InputSystem.actions.FindAction("Press");
         motionAction = InputSystem.actions.FindAction("Motion");
+
+        health.CurrentHealthChanged += (val) => health.StartCoroutine(health.SetInvincibility(1f));
     }
 
     // Update is called once per frame
@@ -138,6 +146,8 @@ public class PlayerController : MonoBehaviour
 
         var bullet = Instantiate(bulletPrefab, shootPoint.position, shootPoint.rotation);
         bullet.GetComponent<Bullet>().moveDirection = shootDir.normalized;
+        shotParticles.Play();
+        barrelSound.Play();
         BulletShot?.Invoke(reloadTime);
 
         yield return new WaitForSeconds(reloadTime);
